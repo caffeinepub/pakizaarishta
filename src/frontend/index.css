@@ -29,13 +29,13 @@
     --radius: 0.75rem;
 
     /* Core Palette */
-    --background: 0.10 0.018 165;
+    --background: 0.12 0.022 165;
     --foreground: 0.96 0.012 95;
 
-    --card: 0.13 0.022 165;
+    --card: 0.16 0.026 165;
     --card-foreground: 0.96 0.012 95;
 
-    --popover: 0.15 0.024 165;
+    --popover: 0.18 0.028 165;
     --popover-foreground: 0.96 0.012 95;
 
     /* Primary — Gold/Amber */
@@ -47,7 +47,7 @@
     --secondary-foreground: 0.96 0.012 95;
 
     --muted: 0.18 0.030 165;
-    --muted-foreground: 0.65 0.025 165;
+    --muted-foreground: 0.72 0.025 165;
 
     --accent: 0.82 0.14 88;
     --accent-foreground: 0.08 0.020 165;
@@ -158,5 +158,25 @@
 
   .font-display {
     font-family: "Bricolage Grotesque", sans-serif;
+  }
+
+  /* ── Film Reel Banner Animation ── */
+  .film-reel-track {
+    animation: filmReel 40s linear infinite;
+    will-change: transform;
+  }
+
+  .film-reel-track:hover {
+    animation-play-state: paused;
+  }
+}
+
+/* Film reel keyframes at top level (outside @layer for max compatibility) */
+@keyframes filmReel {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
   }
 }

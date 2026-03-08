@@ -53,11 +53,164 @@ const staggerContainer: Variants = {
 type Page = "home" | "profiles" | "about";
 
 /* ─────────────────────────────────────────────
+   FILM REEL BANNER
+───────────────────────────────────────────── */
+const allFilmImages = [
+  "/assets/uploads/images-44--1.jpeg",
+  "/assets/uploads/images-43--2.jpeg",
+  "/assets/uploads/images-46--3.jpeg",
+  "/assets/uploads/images-42--4.jpeg",
+  "/assets/uploads/images-45--8.jpeg",
+  "/assets/uploads/images-28--10.jpeg",
+  "/assets/uploads/images-37--27.jpeg",
+  "/assets/uploads/images-7--28.jpeg",
+  "/assets/uploads/images-12--5.jpeg",
+  "/assets/uploads/images-14--6.jpeg",
+  "/assets/uploads/images-11--7.jpeg",
+  "/assets/uploads/images-6--9.jpeg",
+  "/assets/uploads/images-48--11.jpeg",
+  "/assets/uploads/images-17--12.jpeg",
+  "/assets/uploads/images-16--13.jpeg",
+  "/assets/uploads/images-26--14.jpeg",
+  "/assets/uploads/images-24--15.jpeg",
+  "/assets/uploads/images-27--16.jpeg",
+  "/assets/uploads/images-9--17.jpeg",
+  "/assets/uploads/images-10--18.jpeg",
+  "/assets/uploads/images-13--19.jpeg",
+  "/assets/uploads/images-22--20.jpeg",
+  "/assets/uploads/images-23--21.jpeg",
+  "/assets/uploads/images-22.jpeg",
+  "/assets/uploads/images-21--23.jpeg",
+  "/assets/uploads/images-20--24.jpeg",
+  "/assets/uploads/images-25--25.jpeg",
+  "/assets/uploads/images-19--26.jpeg",
+];
+
+// Duplicate for seamless loop
+const filmImagesDoubled = [...allFilmImages, ...allFilmImages];
+
+// Sprocket holes row
+function SprocketRow() {
+  return (
+    <div className="flex items-center gap-[6px] px-2">
+      {Array.from({ length: 40 }).map((_, i) => (
+        <div
+          // biome-ignore lint/suspicious/noArrayIndexKey: static sprocket holes
+          key={i}
+          className="flex-shrink-0 w-4 h-3 bg-black rounded-sm opacity-75"
+        />
+      ))}
+    </div>
+  );
+}
+
+function FilmReelBanner() {
+  return (
+    <div
+      className="w-full overflow-hidden"
+      style={{ background: "#1a0a00", height: "112px" }}
+    >
+      {/* Top sprocket holes */}
+      <div
+        className="flex items-center overflow-hidden"
+        style={{ height: "14px" }}
+      >
+        <SprocketRow />
+      </div>
+
+      {/* Scrolling images */}
+      <div className="overflow-hidden" style={{ height: "84px" }}>
+        <div
+          className="film-reel-track flex items-center gap-2"
+          style={{ width: "max-content" }}
+        >
+          {filmImagesDoubled.map((src, idx) => (
+            <img
+              // biome-ignore lint/suspicious/noArrayIndexKey: film reel uses index
+              key={idx}
+              src={src}
+              alt=""
+              aria-hidden="true"
+              className="flex-shrink-0 rounded-sm object-cover object-center"
+              style={{ height: "80px", width: "80px" }}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Bottom sprocket holes */}
+      <div
+        className="flex items-center overflow-hidden"
+        style={{ height: "14px" }}
+      >
+        <SprocketRow />
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────
+   Wedding Slider Component
+───────────────────────────────────────────── */
+function WeddingSlider() {
+  const [idx, setIdx] = useState(0);
+
+  // Auto-advance
+  useState(() => {
+    const timer = setInterval(() => {
+      setIdx((i) => (i + 1) % weddingSlides.length);
+    }, 3500);
+    return () => clearInterval(timer);
+  });
+
+  return (
+    <div className="relative w-full h-full overflow-hidden">
+      <AnimatePresence mode="wait">
+        <motion.img
+          key={idx}
+          src={weddingSlides[idx]}
+          alt="شادی کی خوبصورت تصویر"
+          className="absolute inset-0 w-full h-full object-cover object-center"
+          initial={{ opacity: 0, scale: 1.05 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.97 }}
+          transition={{ duration: 0.8 }}
+        />
+      </AnimatePresence>
+      <div className="absolute inset-0 bg-gradient-to-r from-[oklch(0.08_0.018_165/0.85)] via-[oklch(0.08_0.018_165/0.55)] to-[oklch(0.08_0.018_165/0.2)]" />
+      {/* Dots */}
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 z-20">
+        {weddingSlides.map((src, i) => (
+          <button
+            type="button"
+            key={src}
+            onClick={() => setIdx(i)}
+            className={`h-1.5 rounded-full transition-all ${i === idx ? "w-5 bg-[oklch(0.78_0.15_85)]" : "w-1.5 bg-white/40"}`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────
    Data
 ───────────────────────────────────────────── */
+// Wedding couple images for hero slider
+const weddingSlides = [
+  "/assets/uploads/images-44--1.jpeg",
+  "/assets/uploads/images-43--2.jpeg",
+  "/assets/uploads/images-46--3.jpeg",
+  "/assets/uploads/images-42--4.jpeg",
+  "/assets/uploads/images-45--8.jpeg",
+  "/assets/uploads/images-28--10.jpeg",
+  "/assets/uploads/images-37--27.jpeg",
+  "/assets/uploads/images-7--28.jpeg",
+];
+
 const rishtaProfiles = [
   {
-    image: "/assets/generated/rishta-larki-profile-1.dim_400x500.jpg",
+    image: "/assets/uploads/images-12--5.jpeg",
     name: "عائشہ",
     age: "24",
     city: "لاہور",
@@ -67,12 +220,12 @@ const rishtaProfiles = [
     sect: "سنی",
     marital: "کنواری",
     desc: "دینداری اور تعلیم میں گہری دلچسپی، گھریلو اور خوش اخلاق خاتون",
-    color: "from-[oklch(0.26_0.09_340)] to-[oklch(0.16_0.04_340)]",
+    color: "from-[oklch(0.32_0.10_340)] to-[oklch(0.22_0.06_340)]",
     border: "border-[oklch(0.55_0.18_340/0.4)]",
-    accent: "text-[oklch(0.82_0.18_340)]",
+    accent: "text-[oklch(0.88_0.18_340)]",
   },
   {
-    image: "/assets/generated/rishta-larki-profile-2.dim_400x500.jpg",
+    image: "/assets/uploads/images-14--6.jpeg",
     name: "زینب",
     age: "22",
     city: "کراچی",
@@ -82,12 +235,12 @@ const rishtaProfiles = [
     sect: "سنی",
     marital: "کنواری",
     desc: "نرم مزاج، باہنر، اور گھر کی قدروقیمت جاننے والی محبت کرنے والی",
-    color: "from-[oklch(0.26_0.09_15)] to-[oklch(0.16_0.04_15)]",
+    color: "from-[oklch(0.32_0.10_15)] to-[oklch(0.22_0.06_15)]",
     border: "border-[oklch(0.60_0.18_15/0.4)]",
-    accent: "text-[oklch(0.82_0.18_15)]",
+    accent: "text-[oklch(0.88_0.18_15)]",
   },
   {
-    image: "/assets/generated/rishta-larki-profile-3.dim_400x500.jpg",
+    image: "/assets/uploads/images-11--7.jpeg",
     name: "فاطمہ",
     age: "26",
     city: "اسلام آباد",
@@ -97,9 +250,264 @@ const rishtaProfiles = [
     sect: "سنی",
     marital: "کنواری",
     desc: "پڑھی لکھی، مہذب، اور خاندانی اقدار کی پابند گھریلو خاتون",
-    color: "from-[oklch(0.24_0.10_240)] to-[oklch(0.16_0.04_240)]",
+    color: "from-[oklch(0.30_0.11_240)] to-[oklch(0.22_0.06_240)]",
     border: "border-[oklch(0.55_0.18_240/0.4)]",
-    accent: "text-[oklch(0.78_0.18_240)]",
+    accent: "text-[oklch(0.84_0.18_240)]",
+  },
+  {
+    image: "/assets/uploads/images-6--9.jpeg",
+    name: "ماریہ",
+    age: "23",
+    city: "ملتان",
+    education: "بی کام",
+    height: "5'2\"",
+    caste: "عباسی",
+    sect: "سنی",
+    marital: "کنواری",
+    desc: "سادہ مزاج، دیندار، اور خاندان کی محبت میں یقین رکھنے والی",
+    color: "from-[oklch(0.30_0.10_60)] to-[oklch(0.22_0.06_60)]",
+    border: "border-[oklch(0.55_0.15_60/0.4)]",
+    accent: "text-[oklch(0.86_0.15_60)]",
+  },
+  {
+    image: "/assets/uploads/images-48--11.jpeg",
+    name: "سارہ",
+    age: "25",
+    city: "پشاور",
+    education: "ایم بی بی ایس",
+    height: "5'5\"",
+    caste: "خان",
+    sect: "سنی",
+    marital: "کنواری",
+    desc: "ڈاکٹر، گھریلو، اور اخلاقی اقدار کو اہمیت دینے والی",
+    color: "from-[oklch(0.30_0.11_280)] to-[oklch(0.22_0.06_280)]",
+    border: "border-[oklch(0.55_0.18_280/0.4)]",
+    accent: "text-[oklch(0.84_0.18_280)]",
+  },
+  {
+    image: "/assets/uploads/images-17--12.jpeg",
+    name: "نور",
+    age: "21",
+    city: "کوئٹہ",
+    education: "بی ایس سی",
+    height: "5'3\"",
+    caste: "مری",
+    sect: "سنی",
+    marital: "کنواری",
+    desc: "خوبصورت، ذہین، اور گھریلو زندگی میں دلچسپی رکھنے والی",
+    color: "from-[oklch(0.30_0.10_180)] to-[oklch(0.22_0.06_180)]",
+    border: "border-[oklch(0.55_0.15_180/0.4)]",
+    accent: "text-[oklch(0.84_0.15_180)]",
+  },
+  {
+    image: "/assets/uploads/images-16--13.jpeg",
+    name: "حنا",
+    age: "24",
+    city: "فیصل آباد",
+    education: "ایم اے اردو",
+    height: "5'4\"",
+    caste: "راجپوت",
+    sect: "سنی",
+    marital: "کنواری",
+    desc: "ادیبہ، تخلیقی ذہن، اور خاندانی اقدار سے محبت کرنے والی",
+    color: "from-[oklch(0.32_0.10_340)] to-[oklch(0.22_0.06_340)]",
+    border: "border-[oklch(0.55_0.18_340/0.4)]",
+    accent: "text-[oklch(0.88_0.18_340)]",
+  },
+  {
+    image: "/assets/uploads/images-26--14.jpeg",
+    name: "صوفیہ",
+    age: "27",
+    city: "لاہور",
+    education: "ایم فل",
+    height: "5'5\"",
+    caste: "سید",
+    sect: "سنی",
+    marital: "کنواری",
+    desc: "پروفیسر، سمجھدار، اور اسلامی اقدار کی پابند خاتون",
+    color: "from-[oklch(0.30_0.11_240)] to-[oklch(0.22_0.06_240)]",
+    border: "border-[oklch(0.55_0.18_240/0.4)]",
+    accent: "text-[oklch(0.84_0.18_240)]",
+  },
+  {
+    image: "/assets/uploads/images-24--15.jpeg",
+    name: "عمارہ",
+    age: "22",
+    city: "کراچی",
+    education: "بی ایس",
+    height: "5'3\"",
+    caste: "خواجہ",
+    sect: "سنی",
+    marital: "کنواری",
+    desc: "مہذب، ذہین، اور خوشگوار خاندانی ماحول کی خواہشمند",
+    color: "from-[oklch(0.32_0.10_15)] to-[oklch(0.22_0.06_15)]",
+    border: "border-[oklch(0.60_0.18_15/0.4)]",
+    accent: "text-[oklch(0.88_0.18_15)]",
+  },
+  {
+    image: "/assets/uploads/images-27--16.jpeg",
+    name: "رابعہ",
+    age: "25",
+    city: "اسلام آباد",
+    education: "ایم بی اے",
+    height: "5'5\"",
+    caste: "میمن",
+    sect: "سنی",
+    marital: "کنواری",
+    desc: "بزنس گریجویٹ، پروفیشنل، اور گھریلو زندگی میں توازن رکھنے والی",
+    color: "from-[oklch(0.30_0.10_60)] to-[oklch(0.22_0.06_60)]",
+    border: "border-[oklch(0.55_0.15_60/0.4)]",
+    accent: "text-[oklch(0.86_0.15_60)]",
+  },
+  {
+    image: "/assets/uploads/images-9--17.jpeg",
+    name: "مریم",
+    age: "23",
+    city: "رحیم یار خان",
+    education: "بی اے",
+    height: "5'2\"",
+    caste: "مغل",
+    sect: "سنی",
+    marital: "کنواری",
+    desc: "گھریلو، دیندار، اور سادہ زندگی کو ترجیح دینے والی خاتون",
+    color: "from-[oklch(0.30_0.11_280)] to-[oklch(0.22_0.06_280)]",
+    border: "border-[oklch(0.55_0.18_280/0.4)]",
+    accent: "text-[oklch(0.84_0.18_280)]",
+  },
+  {
+    image: "/assets/uploads/images-10--18.jpeg",
+    name: "انیلہ",
+    age: "26",
+    city: "سیالکوٹ",
+    education: "ایم ایس",
+    height: "5'4\"",
+    caste: "ارائیں",
+    sect: "سنی",
+    marital: "کنواری",
+    desc: "تعلیم یافتہ، خود مختار، اور خاندان کو اہمیت دینے والی",
+    color: "from-[oklch(0.30_0.10_180)] to-[oklch(0.22_0.06_180)]",
+    border: "border-[oklch(0.55_0.15_180/0.4)]",
+    accent: "text-[oklch(0.84_0.15_180)]",
+  },
+  {
+    image: "/assets/uploads/images-13--19.jpeg",
+    name: "سمیرہ",
+    age: "24",
+    city: "حیدرآباد",
+    education: "بی ایس",
+    height: "5'3\"",
+    caste: "شیخ",
+    sect: "سنی",
+    marital: "کنواری",
+    desc: "نرم دل، محبت کرنے والی، اور گھریلو امور میں ماہر",
+    color: "from-[oklch(0.32_0.10_340)] to-[oklch(0.22_0.06_340)]",
+    border: "border-[oklch(0.55_0.18_340/0.4)]",
+    accent: "text-[oklch(0.88_0.18_340)]",
+  },
+  {
+    image: "/assets/uploads/images-22--20.jpeg",
+    name: "طیبہ",
+    age: "22",
+    city: "گوجرانوالہ",
+    education: "بی ایس سی",
+    height: "5'2\"",
+    caste: "قریشی",
+    sect: "سنی",
+    marital: "کنواری",
+    desc: "محنتی، ذہین، اور خاندانی ذمہ داریوں کو سمجھنے والی",
+    color: "from-[oklch(0.32_0.10_15)] to-[oklch(0.22_0.06_15)]",
+    border: "border-[oklch(0.60_0.18_15/0.4)]",
+    accent: "text-[oklch(0.88_0.18_15)]",
+  },
+  {
+    image: "/assets/uploads/images-23--21.jpeg",
+    name: "ارشی",
+    age: "21",
+    city: "بہاولپور",
+    education: "بی اے",
+    height: "5'2\"",
+    caste: "انصاری",
+    sect: "سنی",
+    marital: "کنواری",
+    desc: "معصوم، خوبصورت، اور والدین کی فرمانبردار بیٹی",
+    color: "from-[oklch(0.30_0.11_240)] to-[oklch(0.22_0.06_240)]",
+    border: "border-[oklch(0.55_0.18_240/0.4)]",
+    accent: "text-[oklch(0.84_0.18_240)]",
+  },
+  {
+    image: "/assets/uploads/images-22.jpeg",
+    name: "شاہانہ",
+    age: "25",
+    city: "لاہور",
+    education: "ایم اے",
+    height: "5'4\"",
+    caste: "سید",
+    sect: "سنی",
+    marital: "کنواری",
+    desc: "پڑھی لکھی، سلیقہ مند، اور دیندار خاتون جو اچھے گھرانے کی خواہشمند",
+    color: "from-[oklch(0.30_0.10_60)] to-[oklch(0.22_0.06_60)]",
+    border: "border-[oklch(0.55_0.15_60/0.4)]",
+    accent: "text-[oklch(0.86_0.15_60)]",
+  },
+  {
+    image: "/assets/uploads/images-21--23.jpeg",
+    name: "عزیزہ",
+    age: "23",
+    city: "کراچی",
+    education: "بی کام",
+    height: "5'3\"",
+    caste: "میمن",
+    sect: "سنی",
+    marital: "کنواری",
+    desc: "باہمت، ذہین، اور خاندانی اقدار میں یقین رکھنے والی",
+    color: "from-[oklch(0.30_0.11_280)] to-[oklch(0.22_0.06_280)]",
+    border: "border-[oklch(0.55_0.18_280/0.4)]",
+    accent: "text-[oklch(0.84_0.18_280)]",
+  },
+  {
+    image: "/assets/uploads/images-20--24.jpeg",
+    name: "نادیہ",
+    age: "26",
+    city: "اسلام آباد",
+    education: "ایم بی اے",
+    height: "5'5\"",
+    caste: "خواجہ",
+    sect: "سنی",
+    marital: "کنواری",
+    desc: "پروفیشنل، مہذب، اور توازن والی زندگی کی خواہشمند",
+    color: "from-[oklch(0.30_0.10_180)] to-[oklch(0.22_0.06_180)]",
+    border: "border-[oklch(0.55_0.15_180/0.4)]",
+    accent: "text-[oklch(0.84_0.15_180)]",
+  },
+  {
+    image: "/assets/uploads/images-25--25.jpeg",
+    name: "حجاب",
+    age: "24",
+    city: "پشاور",
+    education: "بی ایس",
+    height: "5'3\"",
+    caste: "یوسف زئی",
+    sect: "سنی",
+    marital: "کنواری",
+    desc: "دیندار، گھریلو، اور اسلامی تعلیمات پر عمل کرنے والی",
+    color: "from-[oklch(0.32_0.10_340)] to-[oklch(0.22_0.06_340)]",
+    border: "border-[oklch(0.55_0.18_340/0.4)]",
+    accent: "text-[oklch(0.88_0.18_340)]",
+  },
+  {
+    image: "/assets/uploads/images-19--26.jpeg",
+    name: "صبا",
+    age: "22",
+    city: "لاہور",
+    education: "ایم اے انگلش",
+    height: "5'4\"",
+    caste: "راجپوت",
+    sect: "سنی",
+    marital: "کنواری",
+    desc: "انگریزی ادب کی طالبہ، تخلیقی سوچ، اور خوش اخلاق",
+    color: "from-[oklch(0.32_0.10_15)] to-[oklch(0.22_0.06_15)]",
+    border: "border-[oklch(0.60_0.18_15/0.4)]",
+    accent: "text-[oklch(0.88_0.18_15)]",
   },
 ];
 
@@ -127,6 +535,49 @@ const reviews = [
     city: "ملتان",
     stars: 4,
     text: "ایڈمن کی نگرانی میں سب کچھ محفوظ ہے۔ بھروسے کی ویب سائٹ۔",
+  },
+];
+
+const successfulCouples = [
+  {
+    image: "/assets/uploads/images-44--1.jpeg",
+    name: "احمد و سارہ",
+    city: "لاہور",
+  },
+  {
+    image: "/assets/uploads/images-43--2.jpeg",
+    name: "علی و فاطمہ",
+    city: "کراچی",
+  },
+  {
+    image: "/assets/uploads/images-46--3.jpeg",
+    name: "زید و عائشہ",
+    city: "اسلام آباد",
+  },
+  {
+    image: "/assets/uploads/images-42--4.jpeg",
+    name: "عمر و مریم",
+    city: "پشاور",
+  },
+  {
+    image: "/assets/uploads/images-45--8.jpeg",
+    name: "بلال و حنا",
+    city: "ملتان",
+  },
+  {
+    image: "/assets/uploads/images-28--10.jpeg",
+    name: "طارق و زینب",
+    city: "فیصل آباد",
+  },
+  {
+    image: "/assets/uploads/images-37--27.jpeg",
+    name: "حسن و نور",
+    city: "راولپنڈی",
+  },
+  {
+    image: "/assets/uploads/images-7--28.jpeg",
+    name: "کامل و صبا",
+    city: "سیالکوٹ",
   },
 ];
 
@@ -280,7 +731,7 @@ function SectionTitle({
       </h2>
       {urdu && (
         <p
-          className="text-sm text-[oklch(0.75_0.025_165)] mt-1"
+          className="text-sm text-[oklch(0.85_0.025_165)] mt-1"
           style={{ fontFamily: "system-ui, sans-serif", direction: "rtl" }}
         >
           {urdu}
@@ -301,7 +752,7 @@ function NavBar({ page, setPage }: { page: Page; setPage: (p: Page) => void }) {
     { id: "about", label: "About Admin", urdu: "ایڈمن" },
   ];
   return (
-    <nav className="sticky top-0 z-50 bg-[oklch(0.09_0.018_165/0.95)] backdrop-blur-md border-b border-[oklch(0.78_0.15_85/0.2)]">
+    <nav className="sticky top-0 z-50 bg-[oklch(0.13_0.022_165/0.95)] backdrop-blur-md border-b border-[oklch(0.78_0.15_85/0.2)]">
       <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
         <button
           type="button"
@@ -368,22 +819,25 @@ function HomePage({ setPage }: { setPage: (p: Page) => void }) {
 
   return (
     <div>
+      {/* ── FILM REEL BANNER ── */}
+      <FilmReelBanner />
+
       {/* ── HERO ── */}
       <section
         data-ocid="home.hero.section"
-        className="relative overflow-hidden min-h-[92vh] flex flex-col items-center justify-center text-center px-4 hero-gradient pattern-overlay"
+        className="relative overflow-hidden min-h-[92vh] flex items-stretch hero-gradient pattern-overlay"
       >
-        {/* Glows */}
-        <div
-          className="pointer-events-none absolute inset-0"
-          aria-hidden="true"
-        >
-          <div className="absolute top-[-10%] left-[20%] h-96 w-96 rounded-full bg-[oklch(0.40_0.14_340/0.15)] blur-[100px]" />
-          <div className="absolute top-[20%] right-[10%] h-64 w-64 rounded-full bg-[oklch(0.78_0.15_85/0.10)] blur-[80px]" />
-          <div className="absolute bottom-[5%] left-[5%] h-56 w-56 rounded-full bg-[oklch(0.40_0.15_240/0.12)] blur-[80px]" />
-        </div>
+        {/* Left: Text Content */}
+        <div className="relative z-10 flex flex-col justify-center px-6 sm:px-12 lg:px-16 py-16 w-full lg:w-1/2">
+          {/* Glows */}
+          <div
+            className="pointer-events-none absolute inset-0"
+            aria-hidden="true"
+          >
+            <div className="absolute top-[-10%] left-[10%] h-96 w-96 rounded-full bg-[oklch(0.40_0.14_340/0.18)] blur-[100px]" />
+            <div className="absolute bottom-[5%] left-[5%] h-56 w-56 rounded-full bg-[oklch(0.40_0.15_240/0.12)] blur-[80px]" />
+          </div>
 
-        <div className="relative z-10 max-w-3xl mx-auto">
           <motion.div
             variants={fadeUp}
             custom={0}
@@ -403,7 +857,7 @@ function HomePage({ setPage }: { setPage: (p: Page) => void }) {
             custom={1}
             initial="hidden"
             animate="visible"
-            className="text-4xl sm:text-6xl md:text-7xl font-extrabold text-[oklch(0.96_0.012_95)] leading-tight mb-4"
+            className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-[oklch(0.96_0.012_95)] leading-tight mb-4"
             style={{ fontFamily: "system-ui, sans-serif" }}
           >
             💍 پاکیزہ رشتہ 💍
@@ -425,7 +879,7 @@ function HomePage({ setPage }: { setPage: (p: Page) => void }) {
             custom={2.5}
             initial="hidden"
             animate="visible"
-            className="text-sm sm:text-base text-[oklch(0.72_0.025_165)] mb-8 max-w-xl mx-auto leading-relaxed"
+            className="text-sm sm:text-base text-[oklch(0.72_0.025_165)] mb-8 max-w-md leading-relaxed"
             style={{ fontFamily: "system-ui, sans-serif", direction: "rtl" }}
           >
             تصدیق شدہ پروفائلز • ایڈمن کی نگرانی • مکمل پرائیویسی • 100% محفوظ
@@ -435,7 +889,7 @@ function HomePage({ setPage }: { setPage: (p: Page) => void }) {
             variants={staggerContainer}
             initial="hidden"
             animate="visible"
-            className="flex flex-col sm:flex-row gap-4 justify-center mb-12"
+            className="flex flex-col sm:flex-row gap-4 mb-10"
           >
             <motion.div variants={fadeUp} custom={3}>
               <Button
@@ -472,7 +926,7 @@ function HomePage({ setPage }: { setPage: (p: Page) => void }) {
             variants={staggerContainer}
             initial="hidden"
             animate="visible"
-            className="flex flex-wrap justify-center gap-4"
+            className="flex flex-wrap gap-3"
           >
             {[
               { icon: Users, label: "500+ پروفائلز" },
@@ -487,7 +941,7 @@ function HomePage({ setPage }: { setPage: (p: Page) => void }) {
               >
                 <Icon className="h-4 w-4 text-[oklch(0.78_0.15_85)]" />
                 <span
-                  className="text-sm font-semibold text-[oklch(0.82_0.025_165)]"
+                  className="text-sm font-semibold text-[oklch(0.95_0.020_165)]"
                   style={{ fontFamily: "system-ui, sans-serif" }}
                 >
                   {label}
@@ -496,12 +950,19 @@ function HomePage({ setPage }: { setPage: (p: Page) => void }) {
             ))}
           </motion.div>
         </div>
+
+        {/* Right: Wedding Slider */}
+        <div className="hidden lg:block lg:w-1/2 relative min-h-[92vh]">
+          <WeddingSlider />
+          {/* Gradient fade on left edge */}
+          <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[oklch(0.09_0.018_165)] to-transparent z-10 pointer-events-none" />
+        </div>
       </section>
 
       {/* ── Search Bar ── */}
       <section
         data-ocid="home.search.section"
-        className="bg-[oklch(0.11_0.022_165)] py-8 px-4 border-b border-[oklch(0.78_0.15_85/0.15)]"
+        className="bg-[oklch(0.15_0.028_165)] py-8 px-4 border-b border-[oklch(0.78_0.15_85/0.15)]"
       >
         <div className="max-w-4xl mx-auto">
           <motion.div
@@ -509,7 +970,7 @@ function HomePage({ setPage }: { setPage: (p: Page) => void }) {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="rounded-2xl border border-[oklch(0.78_0.15_85/0.3)] bg-[oklch(0.13_0.025_165)] p-5"
+            className="rounded-2xl border border-[oklch(0.78_0.15_85/0.3)] bg-[oklch(0.17_0.030_165)] p-5"
           >
             <p
               className="text-center text-sm font-bold gold-gradient-text mb-4"
@@ -536,7 +997,7 @@ function HomePage({ setPage }: { setPage: (p: Page) => void }) {
                 <select
                   key={f.label}
                   data-ocid={`home.search.${f.label}.select`}
-                  className="rounded-xl bg-[oklch(0.10_0.018_165)] border border-[oklch(0.78_0.15_85/0.2)] text-[oklch(0.78_0.025_165)] text-xs p-2.5 focus:outline-none focus:border-[oklch(0.78_0.15_85/0.6)]"
+                  className="rounded-xl bg-[oklch(0.14_0.022_165)] border border-[oklch(0.78_0.15_85/0.2)] text-[oklch(0.88_0.025_165)] text-xs p-2.5 focus:outline-none focus:border-[oklch(0.78_0.15_85/0.6)]"
                   style={{ fontFamily: "system-ui, sans-serif" }}
                 >
                   <option value="">{f.label} منتخب کریں</option>
@@ -621,7 +1082,7 @@ function HomePage({ setPage }: { setPage: (p: Page) => void }) {
                     {[p.education, p.caste, p.sect].map((tag) => (
                       <span
                         key={tag}
-                        className="text-[10px] px-2 py-0.5 rounded-full bg-[oklch(0.78_0.15_85/0.12)] border border-[oklch(0.78_0.15_85/0.25)] text-[oklch(0.75_0.025_165)]"
+                        className="text-[10px] px-2 py-0.5 rounded-full bg-[oklch(0.78_0.15_85/0.12)] border border-[oklch(0.78_0.15_85/0.25)] text-[oklch(0.88_0.025_165)]"
                         style={{ fontFamily: "system-ui, sans-serif" }}
                       >
                         {tag}
@@ -653,10 +1114,100 @@ function HomePage({ setPage }: { setPage: (p: Page) => void }) {
         </div>
       </section>
 
+      {/* ── Successful Couples ── */}
+      <section
+        data-ocid="home.couples.section"
+        className="py-14 px-4"
+        style={{
+          background:
+            "linear-gradient(135deg, oklch(0.96 0.04 85) 0%, oklch(0.92 0.06 60) 100%)",
+        }}
+      >
+        <div className="max-w-5xl mx-auto">
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="text-center mb-10"
+          >
+            <h2
+              className="text-2xl sm:text-3xl font-extrabold text-rose-700 mb-1"
+              style={{ fontFamily: "system-ui, sans-serif" }}
+            >
+              💕 کامیاب شادیاں 💕
+            </h2>
+            <p
+              className="text-base font-semibold text-amber-800 mt-1"
+              style={{ fontFamily: "system-ui, sans-serif" }}
+            >
+              ہمارے خوش نصیب جوڑے
+            </p>
+            <div className="mx-auto mt-3 h-0.5 w-24 bg-gradient-to-r from-transparent via-rose-400 to-transparent" />
+          </motion.div>
+
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid gap-5 grid-cols-2 sm:grid-cols-4"
+          >
+            {successfulCouples.map((couple, i) => (
+              <motion.div
+                key={couple.name}
+                variants={fadeUp}
+                custom={i}
+                data-ocid={`home.couples.card.${i + 1}`}
+                className="group relative rounded-2xl overflow-hidden border-2 border-pink-300/60 bg-white shadow-lg hover:shadow-xl hover:scale-[1.03] transition-all duration-300"
+              >
+                <div className="relative overflow-hidden h-48">
+                  <img
+                    src={couple.image}
+                    alt={couple.name}
+                    className="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                  {/* Successful couple badge */}
+                  <div className="absolute top-2 right-2">
+                    <span className="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full bg-green-500 text-white text-[9px] font-bold shadow-lg">
+                      ✅ کامیاب جوڑا
+                    </span>
+                  </div>
+                </div>
+                <div className="p-3 text-center bg-white">
+                  {/* Stars */}
+                  <div className="flex justify-center gap-0.5 mb-1">
+                    {[1, 2, 3, 4, 5].map((s) => (
+                      <Star
+                        key={s}
+                        className="h-3 w-3 text-amber-500 fill-current"
+                      />
+                    ))}
+                  </div>
+                  <p
+                    className="font-extrabold text-gray-800 text-sm leading-tight"
+                    style={{ fontFamily: "system-ui, sans-serif" }}
+                  >
+                    {couple.name}
+                  </p>
+                  <p
+                    className="text-xs text-rose-600 mt-0.5 font-semibold"
+                    style={{ fontFamily: "system-ui, sans-serif" }}
+                  >
+                    📍 {couple.city}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
       {/* ── How It Works ── */}
       <section
         data-ocid="home.howitworks.section"
-        className="py-14 px-4 bg-[oklch(0.11_0.022_165)]"
+        className="py-14 px-4 bg-[oklch(0.15_0.028_165)]"
       >
         <div className="max-w-4xl mx-auto">
           <SectionTitle urdu="آسان عمل">🔄 How It Works</SectionTitle>
@@ -710,7 +1261,7 @@ function HomePage({ setPage }: { setPage: (p: Page) => void }) {
                   {s.title}
                 </p>
                 <p
-                  className="text-xs text-[oklch(0.60_0.025_165)] leading-relaxed"
+                  className="text-xs text-[oklch(0.75_0.025_165)] leading-relaxed"
                   style={{ fontFamily: "system-ui, sans-serif" }}
                 >
                   {s.desc}
@@ -829,7 +1380,7 @@ function HomePage({ setPage }: { setPage: (p: Page) => void }) {
       {/* ── Reviews ── */}
       <section
         data-ocid="home.reviews.section"
-        className="py-14 px-4 bg-[oklch(0.11_0.022_165)]"
+        className="py-14 px-4 bg-[oklch(0.15_0.028_165)]"
       >
         <div className="max-w-2xl mx-auto">
           <SectionTitle urdu="کامیاب کہانیاں">⭐ تجربات</SectionTitle>
@@ -926,7 +1477,7 @@ function HomePage({ setPage }: { setPage: (p: Page) => void }) {
               آج ہی شروع کریں
             </h2>
             <p
-              className="text-sm text-[oklch(0.65_0.025_165)] mb-6"
+              className="text-sm text-[oklch(0.80_0.025_165)] mb-6"
               style={{ fontFamily: "system-ui, sans-serif", direction: "rtl" }}
             >
               WhatsApp پر رابطہ کریں اور اپنا رشتہ تلاش کریں
@@ -974,8 +1525,11 @@ function HomePage({ setPage }: { setPage: (p: Page) => void }) {
 function ProfilesPage() {
   return (
     <div className="min-h-screen bg-background">
+      {/* Film Reel Banner */}
+      <FilmReelBanner />
+
       {/* Header */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-[oklch(0.16_0.06_340)] via-[oklch(0.13_0.025_165)] to-[oklch(0.16_0.06_15)] py-14 px-4 text-center">
+      <div className="relative overflow-hidden bg-gradient-to-br from-[oklch(0.20_0.07_340)] via-[oklch(0.17_0.030_165)] to-[oklch(0.20_0.07_15)] py-14 px-4 text-center">
         <div className="pointer-events-none absolute inset-0">
           <div className="absolute top-0 right-0 h-56 w-56 rounded-full bg-[oklch(0.40_0.14_340/0.15)] blur-[80px]" />
         </div>
@@ -993,7 +1547,7 @@ function ProfilesPage() {
             رشتہ سیکشن
           </h1>
           <p
-            className="text-sm text-[oklch(0.65_0.025_165)]"
+            className="text-sm text-[oklch(0.80_0.025_165)]"
             style={{ fontFamily: "system-ui, sans-serif", direction: "rtl" }}
           >
             تمام پروفائلز ایڈمن سے تصدیق شدہ | رابطہ صرف ادائیگی کے بعد
@@ -1058,10 +1612,10 @@ function ProfilesPage() {
                   ].map(({ label, value }) => (
                     <div
                       key={label}
-                      className="rounded-lg bg-[oklch(0.10_0.020_165/0.6)] border border-[oklch(0.78_0.15_85/0.15)] px-3 py-2 text-center"
+                      className="rounded-lg bg-[oklch(0.18_0.030_165/0.8)] border border-[oklch(0.78_0.15_85/0.15)] px-3 py-2 text-center"
                       style={{ fontFamily: "system-ui, sans-serif" }}
                     >
-                      <p className="text-[9px] text-[oklch(0.50_0.025_165)] uppercase tracking-wide">
+                      <p className="text-[9px] text-[oklch(0.65_0.025_165)] uppercase tracking-wide">
                         {label}
                       </p>
                       <p className="text-xs font-bold text-[oklch(0.88_0.020_165)] mt-0.5">
@@ -1072,7 +1626,7 @@ function ProfilesPage() {
                 </div>
 
                 <p
-                  className="text-xs text-[oklch(0.68_0.025_165)] leading-relaxed mb-4 text-right"
+                  className="text-xs text-[oklch(0.82_0.025_165)] leading-relaxed mb-4 text-right"
                   style={{
                     fontFamily: "system-ui, sans-serif",
                     direction: "rtl",
@@ -1083,7 +1637,7 @@ function ProfilesPage() {
 
                 <div className="rounded-lg bg-[oklch(0.78_0.15_85/0.08)] border border-[oklch(0.78_0.15_85/0.20)] p-3 mb-4 text-center">
                   <p
-                    className="text-[10px] text-[oklch(0.55_0.025_165)]"
+                    className="text-[10px] text-[oklch(0.72_0.025_165)]"
                     style={{ fontFamily: "system-ui, sans-serif" }}
                   >
                     رابطہ کے لیے ادائیگی درکار ہے
@@ -1131,7 +1685,7 @@ function ProfilesPage() {
             🌟 اپنا پروفائل بنائیں — صرف 1,000 PKR
           </p>
           <p
-            className="text-xs text-[oklch(0.60_0.025_165)] mb-5"
+            className="text-xs text-[oklch(0.78_0.025_165)] mb-5"
             style={{ fontFamily: "system-ui, sans-serif", direction: "rtl" }}
           >
             رجسٹریشن کریں اور ہزاروں تصدیق شدہ پروفائلز دیکھیں
