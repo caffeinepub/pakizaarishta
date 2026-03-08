@@ -1,0 +1,162 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   Font Faces — Bricolage Grotesque (Display) + Sora (Body)
+   ============================================================ */
+@font-face {
+  font-family: "Bricolage Grotesque";
+  src: url("/assets/fonts/BricolageGrotesque-Variable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Sora";
+  src: url("/assets/fonts/Sora-Variable.woff2") format("woff2");
+  font-weight: 100 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ============================================================
+   Design Tokens — Deep Emerald + Gold (Islamic Palatial)
+   ============================================================ */
+@layer base {
+  :root {
+    --radius: 0.75rem;
+
+    /* Core Palette */
+    --background: 0.10 0.018 165;
+    --foreground: 0.96 0.012 95;
+
+    --card: 0.13 0.022 165;
+    --card-foreground: 0.96 0.012 95;
+
+    --popover: 0.15 0.024 165;
+    --popover-foreground: 0.96 0.012 95;
+
+    /* Primary — Gold/Amber */
+    --primary: 0.78 0.15 85;
+    --primary-foreground: 0.08 0.020 165;
+
+    /* Secondary — Deep Emerald */
+    --secondary: 0.22 0.055 165;
+    --secondary-foreground: 0.96 0.012 95;
+
+    --muted: 0.18 0.030 165;
+    --muted-foreground: 0.65 0.025 165;
+
+    --accent: 0.82 0.14 88;
+    --accent-foreground: 0.08 0.020 165;
+
+    --destructive: 0.577 0.245 27.325;
+    --destructive-foreground: 0.985 0 0;
+
+    --border: 0.25 0.045 165;
+    --input: 0.22 0.040 165;
+    --ring: 0.78 0.15 85;
+
+    /* Charts */
+    --chart-1: 0.78 0.15 85;
+    --chart-2: 0.45 0.14 165;
+    --chart-3: 0.60 0.12 200;
+    --chart-4: 0.65 0.18 55;
+    --chart-5: 0.55 0.20 30;
+
+    /* Sidebar */
+    --sidebar: 0.12 0.020 165;
+    --sidebar-foreground: 0.96 0.012 95;
+    --sidebar-primary: 0.78 0.15 85;
+    --sidebar-primary-foreground: 0.08 0.020 165;
+    --sidebar-accent: 0.22 0.055 165;
+    --sidebar-accent-foreground: 0.96 0.012 95;
+    --sidebar-border: 0.25 0.045 165;
+    --sidebar-ring: 0.78 0.15 85;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: "Sora", sans-serif;
+  }
+}
+
+/* ============================================================
+   Custom Utilities
+   ============================================================ */
+@layer utilities {
+  .text-gold {
+    color: oklch(0.78 0.15 85);
+  }
+
+  .text-gold-light {
+    color: oklch(0.88 0.12 88);
+  }
+
+  .bg-emerald-deep {
+    background-color: oklch(0.10 0.018 165);
+  }
+
+  .bg-emerald-card {
+    background-color: oklch(0.14 0.030 165);
+  }
+
+  .border-gold {
+    border-color: oklch(0.78 0.15 85);
+  }
+
+  .border-gold-dim {
+    border-color: oklch(0.60 0.10 85 / 0.4);
+  }
+
+  .glow-gold {
+    box-shadow:
+      0 0 20px oklch(0.78 0.15 85 / 0.4),
+      0 0 60px oklch(0.78 0.15 85 / 0.15);
+  }
+
+  .glow-gold-sm {
+    box-shadow: 0 0 12px oklch(0.78 0.15 85 / 0.35);
+  }
+
+  .hero-gradient {
+    background: radial-gradient(
+      ellipse 80% 60% at 50% 0%,
+      oklch(0.25 0.10 165) 0%,
+      oklch(0.12 0.035 165) 45%,
+      oklch(0.07 0.015 165) 100%
+    );
+  }
+
+  .card-glass {
+    background: oklch(0.14 0.028 165 / 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .gold-gradient-text {
+    background: linear-gradient(
+      135deg,
+      oklch(0.92 0.14 88) 0%,
+      oklch(0.78 0.18 72) 50%,
+      oklch(0.88 0.12 95) 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .pattern-overlay {
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.025'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+
+  .font-display {
+    font-family: "Bricolage Grotesque", sans-serif;
+  }
+}
